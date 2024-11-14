@@ -1,0 +1,40 @@
+import tensorflow as tf
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.model_selection import train_test_split
+
+# Directory path to your image dataset (organized into subfolders for each class)
+DATASET_PATH = 'path/to/your/dataset'
+
+# Split parameters
+IMAGE_SIZE = (128, 128)  # Resize all images to 128x128
+BATCH_SIZE = 32  # Number of images processed together
+SEED = 42  # Ensure reproducibility
+
+# Create ImageDataGenerator objects for data augmentation
+datagen = ImageDataGenerator(
+    rescale=1.0/255.0,  # Normalize pixel values between 0 and 1
+    validation_split=0.2,  # Use 20% of data for validation
+    rotation_range=15,  # Randomly rotate images
+    width_shift_range=0.1,  # Shift width randomly
+    height_shift_range=0.1,  # Shift height randomly
+    horizontal_flip=True  # Random horizontal flip
+)
+
+# Load and split data into training and validation sets
+train_data = datagen.flow_from_directory(
+    DATASET_PATH,
+    target_size=IMAGE_SIZE,
+    batch_size=BATCH_SIZE,
+    class_mode='categorical',  # Use 'categorical' for multi-class classification
+    subset='training',
+    seed=SEED
+)
+
+val_data = datagen.flow_from_directory(
+    DATASET_PATH,
+    target_size=IMAGE_SIZE,
+    batch_size=BATCH_SIZE,
+    class_mode='categorical',
+    subset='validation',
+    seed=SEED
+)
