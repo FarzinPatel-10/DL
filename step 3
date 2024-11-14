@@ -1,0 +1,7 @@
+# Train the model
+history = model.fit(
+    train_data,
+    validation_data=val_data,
+    epochs=10,  # Number of epochs
+    verbose=1  # Display training progress
+)
